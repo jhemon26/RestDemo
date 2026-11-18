@@ -115,30 +115,31 @@ ul { padding: 0; list-style: none; }
 .place dd { margin: 0; }
 @media (max-width: 900px) { .place { grid-template-columns: 1fr; gap: 20px; padding-block: 8px 80px; } .place figure { width: min(100%, 420px); margin: 0 auto; } }
 
-/* Plates */
-/* What we're cooking: the plates glide right to left in an endless loop, rocking gently as they go.
-   Hover (or hold a finger on it) to pause. The edges fade into the paint. */
-.strip { position: relative; overflow: hidden; }
-.strip::before, .strip::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 1; width: 8%; max-width: 110px; pointer-events: none; background: linear-gradient(90deg, var(--paint) 0%, rgba(0,74,73,0) 100%); }
+/* Plates: What we're cooking. A row of plates people slide left or right by hand (swipe on phones, drag or trackpad on computers).
+   The row repeats, so it never runs out in either direction. The edges fade into the paint. */
+.strip { position: relative; }
+.strip::before, .strip::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 1; width: 7%; max-width: 100px; pointer-events: none; background: linear-gradient(90deg, var(--paint) 0%, rgba(0,74,73,0) 100%); }
 .strip::before { left: 0; } .strip::after { right: 0; transform: scaleX(-1); }
-.track { display: flex; width: max-content; padding-block: 14px 4px; animation: plates-glide var(--glide, 40s) linear infinite; }
-.track .plate { flex: none; width: 190px; margin-right: 46px; }
-@media (hover: hover) { .strip:hover .track { animation-play-state: paused; } }
-.strip.hold .track { animation-play-state: paused; }
-@keyframes plates-glide { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .strip { overflow-x: auto; scrollbar-width: none; } .strip::before, .strip::after, .track > [aria-hidden="true"] { display: none; } }
-.plate { appearance: none; background: none; border: 0; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font: inherit; }
-/* The plates are photographed at an angle, so they rock back and forth rather than spin; the shadow underneath stays put. */
-.plate .pimg { position: relative; display: block; width: 100%; aspect-ratio: 1; margin-bottom: 12px; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+.strip-scroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter, 20px); overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; -webkit-user-select: none; user-select: none; }
+.strip-scroll::-webkit-scrollbar { display: none; }
+.strip-scroll.dragging { scroll-snap-type: none; }
+@media (hover: hover) and (pointer: fine) { .strip-scroll { cursor: grab; } .strip-scroll.dragging { cursor: grabbing; } }
+.track { display: flex; width: max-content; padding-block: 10px 4px; }
+.track .plate { flex: none; width: 190px; margin-right: 46px; scroll-snap-align: start; }
+.track img { -webkit-user-drag: none; pointer-events: none; }
+.slide-note { margin-top: 16px; text-align: center; font: 600 11px/16px var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--gilt); }
+.slide-note span { letter-spacing: 0; font-size: 14px; color: var(--faint); }
+.plate { appearance: none; background: none; border: 0; padding: 0; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font: inherit; color: inherit; }
+.plate .pimg { position: relative; display: block; width: 100%; aspect-ratio: 1; margin-bottom: 12px; }
 .plate .pimg::before { content: ""; position: absolute; left: 13%; right: 13%; bottom: 1%; height: 16%; border-radius: 50%; background: rgba(0,22,22,.6); filter: blur(12px); }
-.plate .pimg img { position: relative; width: 100%; height: 100%; object-fit: contain; transform-origin: 50% 55%; animation: plate-rock 6.5s ease-in-out infinite alternate; }
-.plate:nth-child(6n+2) .pimg img { animation-delay: -2.4s; } .plate:nth-child(6n+3) .pimg img { animation-delay: -4.9s; } .plate:nth-child(6n+4) .pimg img { animation-delay: -1.3s; } .plate:nth-child(6n+5) .pimg img { animation-delay: -3.7s; } .plate:nth-child(6n) .pimg img { animation-delay: -5.6s; }
-@media (hover: hover) { .plate:hover .pimg { transform: scale(1.05); } }
-@keyframes plate-rock { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+.plate .pimg img { position: relative; width: 100%; height: 100%; object-fit: contain; }
 .kitchen { overflow-x: hidden; overflow-x: clip; }
+/* Copyright line, last thing on every page */
+.legal { border-top: 1px solid var(--rule); padding: 22px max(20px, env(safe-area-inset-right, 0px)) 26px max(20px, env(safe-area-inset-left, 0px)); text-align: center; font: 500 12px/18px var(--sans); color: var(--faint); letter-spacing: .02em; }
+@media (max-width: 560px) { body:has(#hist:not([hidden])) .legal { padding-bottom: 84px; } }
 .plate .pn { font: 400 20px/1.25 var(--serif); text-align: center; }
 .plate .pp { font: 400 19px/1.2 var(--serif); color: var(--gilt); margin-top: auto; }
-@media (max-width: 900px) { .track .plate { width: 132px; margin-right: 20px; } .plate .pimg { margin-bottom: 8px; } .plate .pn { font-size: 15px; line-height: 1.2; } .plate .pp { font-size: 15px; } }
+@media (max-width: 900px) { .track .plate { width: 132px; margin-right: 20px; } .plate .pimg { margin-bottom: 8px; } .plate .pn { font-size: 15px; line-height: 1.2; } .plate .pp { font-size: 15px; } .slide-note { margin-top: 12px; } }
 
 /* Menu blocks */
 .kitchen { padding-block: 24px 96px; }
@@ -747,6 +748,7 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
   .progress { background: rgba(251,248,242,.14); }
   .toast { border-radius: 0; font: 600 13px/20px var(--font-sans); }
   @media (max-width: 720px) { .bottom-nav { background: var(--surface); } }
+  footer.legal { background: none; border-top: 1px solid var(--line); padding: 18px 16px 20px; text-align: center; font: 500 12px/18px var(--font-sans); color: var(--ink-muted); letter-spacing: .02em; }
 </style>
 </head>
 <body>
@@ -819,7 +821,8 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
     <div class="wrap">
       <div class="k-head"><p class="cap">The menu</p><h2 class="h2">What we’re cooking</h2></div>
     </div>
-    <div class="strip" id="strip"><div class="track" id="track"><button class="plate" data-dish="st13" aria-haspopup="dialog"><span class="pimg"><img data-img="1" alt=""></span><span class="pn">Stir Prawn with Vegetable</span><span class="pp">৳350</span></button><button class="plate" data-dish="sa1" aria-haspopup="dialog"><span class="pimg"><img data-img="2" alt=""></span><span class="pn">Cashew Nut Salad</span><span class="pp">৳350</span></button><button class="plate" data-dish="a5" aria-haspopup="dialog"><span class="pimg"><img data-img="3" alt=""></span><span class="pn">Potato Wedges</span><span class="pp">৳140</span></button><button class="plate" data-dish="st12" aria-haspopup="dialog"><span class="pimg"><img data-img="4" alt=""></span><span class="pn">Chicken Korai Curry with Vegetable</span><span class="pp">৳300</span></button><button class="plate" data-dish="k8" aria-haspopup="dialog"><span class="pimg"><img data-img="5" alt=""></span><span class="pn">Flat White</span><span class="pp">৳200</span></button><button class="plate" data-dish="k1" aria-haspopup="dialog"><span class="pimg"><img data-img="6" alt=""></span><span class="pn">Espresso</span><span class="pp">৳150</span></button></div></div>
+    <div class="strip"><div class="strip-scroll" id="strip"><div class="track" id="track"><button class="plate" data-dish="st13" aria-haspopup="dialog"><span class="pimg"><img data-img="1" alt=""></span><span class="pn">Stir Prawn with Vegetable</span><span class="pp">৳350</span></button><button class="plate" data-dish="sa1" aria-haspopup="dialog"><span class="pimg"><img data-img="2" alt=""></span><span class="pn">Cashew Nut Salad</span><span class="pp">৳350</span></button><button class="plate" data-dish="a5" aria-haspopup="dialog"><span class="pimg"><img data-img="3" alt=""></span><span class="pn">Potato Wedges</span><span class="pp">৳140</span></button><button class="plate" data-dish="st12" aria-haspopup="dialog"><span class="pimg"><img data-img="4" alt=""></span><span class="pn">Chicken Korai Curry with Vegetable</span><span class="pp">৳300</span></button><button class="plate" data-dish="k8" aria-haspopup="dialog"><span class="pimg"><img data-img="5" alt=""></span><span class="pn">Flat White</span><span class="pp">৳200</span></button><button class="plate" data-dish="k1" aria-haspopup="dialog"><span class="pimg"><img data-img="6" alt=""></span><span class="pn">Espresso</span><span class="pp">৳150</span></button></div></div></div>
+    <p class="slide-note" aria-hidden="true"><span>&larr;</span> Slide to view more <span>&rarr;</span></p>
     <div class="wrap">
       <div class="blocks teaser" id="teaser"><div class="blk"><div class="bh"><span class="ring"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 17h24a12 12 0 0 1-24 0z"/><path d="M8 17c1-4 4-7 8-7s7 3 8 7"/><path d="M22 4l-6 9"/></svg></span><h3>Set menus</h3></div><p class="meta">6 dishes · from ৳290</p><ul><li><button class="row" data-dish="st7" aria-haspopup="dialog"><span class="n">Roasted Chicken Leg with Grill Mushroom<span class="tag">New</span></span><span class="dots"></span><span class="p">৳350</span></button></li><li><button class="row" data-dish="st14" aria-haspopup="dialog"><span class="n">Stir Beef with Vegetable<span class="tag">New</span></span><span class="dots"></span><span class="p">৳380</span></button></li><li><button class="row" data-dish="st10" aria-haspopup="dialog"><span class="n">Beef Sizzling with Vegetable</span><span class="dots"></span><span class="p">৳320</span></button></li><li><button class="row" data-dish="st8" aria-haspopup="dialog"><span class="n">Chicken Steak with Vegetable</span><span class="dots"></span><span class="p">৳290</span></button></li></ul><a class="all" href="#menu-sets">All set menus <span aria-hidden="true">→</span></a></div><div class="blk"><div class="bh"><span class="ring"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14h14l-2 13H11z"/><path d="M12 14l-1-8M15 14V5M18 14l1-9M21 14l2-7"/></svg></span><h3>Snacks &amp; sides</h3></div><p class="meta">6 dishes · from ৳140</p><ul><li><button class="row" data-dish="n2" aria-haspopup="dialog"><span class="n">Cheesy Beef Nachos</span><span class="dots"></span><span class="p">৳280</span></button></li><li><button class="row" data-dish="a3" aria-haspopup="dialog"><span class="n">Chicken Strips</span><span class="dots"></span><span class="p">৳250</span></button></li><li><button class="row" data-dish="a1" aria-haspopup="dialog"><span class="n">Peri Peri French Fry</span><span class="dots"></span><span class="p">৳170</span></button></li><li><button class="row" data-dish="so1" aria-haspopup="dialog"><span class="n">Thai Soup</span><span class="dots"></span><span class="p">৳160</span></button></li></ul><a class="all" href="#menu-snacks">All snacks <span aria-hidden="true">→</span></a></div><div class="blk"><div class="bh"><span class="ring"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="16" cy="20" rx="12" ry="6"/><path d="M9 19c2-4 5-1 7-4s5 0 7 3"/><path d="M21 4l-3 12M24 5l-4 11"/></svg></span><h3>Pasta &amp; noodles</h3></div><p class="meta">5 dishes · from ৳230</p><ul><li><button class="row" data-dish="pasta" aria-haspopup="dialog"><span class="n">Chicken Pasta</span><span class="dots"></span><span class="p">৳300</span></button></li><li><button class="row" data-dish="pasta" aria-haspopup="dialog"><span class="n">Naga Pasta</span><span class="dots"></span><span class="p">৳330</span></button></li><li><button class="row" data-dish="pasta" aria-haspopup="dialog"><span class="n">Chef's Special Pasta</span><span class="dots"></span><span class="p">৳350</span></button></li><li><button class="row" data-dish="c1" aria-haspopup="dialog"><span class="n">Chicken Chowmein</span><span class="dots"></span><span class="p">৳230</span></button></li></ul><a class="all" href="#menu-pasta">All pasta <span aria-hidden="true">→</span></a></div><div class="blk"><div class="bh"><span class="ring"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12h17v6a7 7 0 0 1-7 7h-3a7 7 0 0 1-7-7z"/><path d="M23 14h2a3 3 0 0 1 0 6h-3"/><path d="M11 8c-1-1.5 1-2.5 0-4M16 8c-1-1.5 1-2.5 0-4"/></svg></span><h3>Coffee &amp; desserts</h3></div><p class="meta">6 dishes · from ৳150</p><ul><li><button class="row" data-dish="k7" aria-haspopup="dialog"><span class="n">Latte</span><span class="dots"></span><span class="p">৳210</span></button></li><li><button class="row" data-dish="k6" aria-haspopup="dialog"><span class="n">Cappuccino</span><span class="dots"></span><span class="p">৳200</span></button></li><li><button class="row" data-dish="e3" aria-haspopup="dialog"><span class="n">Falooda</span><span class="dots"></span><span class="p">৳200</span></button></li><li><button class="row" data-dish="i3" aria-haspopup="dialog"><span class="n">Strawberry Ice Cream</span><span class="dots"></span><span class="p">৳190</span></button></li></ul><a class="all" href="#menu-coffee">All coffee &amp; desserts <span aria-hidden="true">→</span></a></div></div>
       <div class="tdots" id="tdots"><button type="button" data-t="0" aria-label="Set menus"></button><button type="button" data-t="1" aria-label="Snacks and sides"></button><button type="button" data-t="2" aria-label="Pasta and noodles"></button><button type="button" data-t="3" aria-label="Coffee and desserts"></button></div>
@@ -854,6 +857,8 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
     <div class="mp-foot"><a class="btn" href="#order">Order for delivery or pick up</a></div>
   </section>
 </main>
+
+<footer class="legal"><p>&copy; <span data-year>2026</span> Quillion Technologies Ltd. All rights reserved.</p></footer>
 
 <div class="hist" id="hist" hidden><button type="button" data-hist="-1" aria-label="Go back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" data-hist="1" aria-label="Go forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button><span class="where" id="where">Menu</span></div>
 
@@ -928,27 +933,49 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
   drawer.addEventListener("click", function (e) { if (e.target.closest("a") || e.target.closest("[data-drawer-close]")) closeDrawer(); });
 
   // ---------- Dish card ----------
-  // ---------- What we're cooking: endless right-to-left strip ----------
+  // ---------- What we're cooking: slide left or right by hand; the row never runs out ----------
   var strip = document.getElementById("strip"), track = document.getElementById("track");
-  if (track) {
-    var originals = Array.prototype.slice.call(track.children), lastW = 0;
-    // Just enough copies to fill the screen twice over: the strip moves by exactly half its length, then starts again.
-    function fillStrip() {
-      var w = window.innerWidth; if (!w || w === lastW) return; lastW = w;
+  if (strip && track) {
+    var plates = Array.prototype.slice.call(track.children), SIDE = 3, setW = 0, base = 0, lastW = 0, touching = false, md = null, eatClick = false, endT = 0;
+    function copyOf(n) { var c = n.cloneNode(true); c.setAttribute("aria-hidden", "true"); c.tabIndex = -1; return c; }
+    // Three copies of the dishes on each side of the real ones, so a swipe either way keeps finding plates.
+    function build() {
+      var w = strip.clientWidth; if (!w || w === lastW) return;
+      var keep = setW ? (((strip.scrollLeft - base) % setW) + setW) % setW : 0;
+      lastW = w;
       track.querySelectorAll('[aria-hidden="true"]').forEach(function (n) { n.parentNode.removeChild(n); });
-      var setW = originals.length * (w > 900 ? 236 : 152), k = Math.max(1, Math.ceil(w / setW));
-      for (var c = 0; c < 2 * k - 1; c++) originals.forEach(function (n) { var x = n.cloneNode(true); x.setAttribute("aria-hidden", "true"); x.tabIndex = -1; track.appendChild(x); });
-      track.style.setProperty("--glide", Math.round(setW * k / (w > 900 ? 36 : 30)) + "s");
-      // copies rock in step with their originals, so the loop joins without a jump
-      if (document.timeline && track.getAnimations) {
-        var t0 = document.timeline.currentTime;
-        track.querySelectorAll("img").forEach(function (im) { im.getAnimations().forEach(function (an) { an.startTime = t0; }); });
+      for (var c = 0; c < SIDE; c++) {
+        plates.forEach(function (n) { track.appendChild(copyOf(n)); });
+        for (var i = plates.length - 1; i >= 0; i--) track.insertBefore(copyOf(plates[i]), track.firstChild);
       }
+      setW = (plates[0].getBoundingClientRect().width + parseFloat(getComputedStyle(plates[0]).marginRight)) * plates.length;
+      var gutter = Math.max(20, (w - 1200) / 2 + 20);
+      strip.style.setProperty("--gutter", gutter + "px");
+      base = SIDE * setW - gutter;
+      strip.scrollLeft = base + keep;
     }
-    fillStrip();
-    var fillT; window.addEventListener("resize", function () { clearTimeout(fillT); fillT = setTimeout(fillStrip, 200); });
-    strip.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse") strip.classList.add("hold"); });
-    ["pointerup", "pointercancel", "pointerleave"].forEach(function (t) { strip.addEventListener(t, function () { strip.classList.remove("hold"); }); });
+    // When the row comes to rest far from the middle, jump to the identical spot in the middle copy (nothing visible changes).
+    function recentre() {
+      if (!setW || touching || md) return;
+      var o = strip.scrollLeft - base;
+      if (o < -setW || o > setW) strip.scrollLeft = base + ((o % setW) + setW) % setW;
+    }
+    function later() { clearTimeout(endT); endT = setTimeout(recentre, 180); }
+    strip.addEventListener("scroll", later, { passive: true });
+    strip.addEventListener("touchstart", function () { touching = true; }, { passive: true });
+    ["touchend", "touchcancel"].forEach(function (t) { strip.addEventListener(t, function () { touching = false; later(); }, { passive: true }); });
+    // Computers: drag with the mouse (trackpads scroll sideways on their own)
+    strip.addEventListener("pointerdown", function (e) { eatClick = false; if (e.pointerType !== "mouse" || e.button !== 0) return; md = { x: e.clientX, s: strip.scrollLeft, moved: false }; });
+    window.addEventListener("pointermove", function (e) {
+      if (!md) return;
+      var dx = e.clientX - md.x;
+      if (!md.moved && Math.abs(dx) > 5) { md.moved = true; strip.classList.add("dragging"); }
+      if (md.moved) strip.scrollLeft = md.s - dx;
+    });
+    window.addEventListener("pointerup", function () { if (!md) return; eatClick = md.moved; md = null; strip.classList.remove("dragging"); later(); });
+    strip.addEventListener("click", function (e) { if (eatClick) { e.preventDefault(); e.stopPropagation(); eatClick = false; } }, true);
+    strip.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    if (window.ResizeObserver) new ResizeObserver(function () { build(); }).observe(strip); else { build(); window.addEventListener("resize", build); }
   }
 
   // ---------- Teaser cards on phones: one card at a time, dots below ----------
@@ -972,6 +999,8 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
   document.addEventListener("click", function (e) { var b = e.target.closest("[data-dish]"); if (b && !sheet.contains(b)) openDish(b.dataset.dish); });
   sheet.addEventListener("click", function (e) { if (e.target === sheet || e.target.closest("[data-dclose]")) closeDish(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeDish(); closeDrawer(); } });
+
+  document.querySelectorAll("[data-year]").forEach(function (e) { e.textContent = new Date().getFullYear(); });
 
   // ---------- Header rule on scroll ----------
   var top = document.querySelector(".top");
@@ -1237,6 +1266,7 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
       '<button class="cv-btn cv-btn-primary cart-pill" data-go="cart" aria-label="Cart, ' + cartCount() + ' items">' + I.bag.replace("<svg", '<svg width="18" height="18"') + ' Cart <span class="count">' + cartCount() + "</span></button>" +
       "</div></header>";
   }
+  function legal() { return '<footer class="legal">&copy; ' + new Date().getFullYear() + " Quillion Technologies Ltd. All rights reserved.</footer>"; }
   function bottomNav() {
     var r = st.route, u = me();
     function b(id, ic, label) { return '<button data-go="' + id + '"' + (r === id ? ' aria-current="page"' : "") + ">" + ic + label + "</button>"; }
@@ -1457,7 +1487,7 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
     var views = { home: home, menu: menu, cart: cart, auth: auth, checkout: checkout, pay: payment, track: track, orders: orders, account: account };
     var focusId = document.activeElement && document.activeElement.id, selStart = null;
     try { selStart = document.activeElement && document.activeElement.selectionStart; } catch (e) {}
-    document.getElementById("app").innerHTML = header() + "<main>" + (views[st.route] || home)() + "</main>" + bottomNav() + sheet() + (st.toast ? '<div class="toast" role="status">' + esc(st.toast) + "</div>" : "");
+    document.getElementById("app").innerHTML = header() + "<main>" + (views[st.route] || home)() + "</main>" + legal() + bottomNav() + sheet() + (st.toast ? '<div class="toast" role="status">' + esc(st.toast) + "</div>" : "");
     if (focusId) { var el = document.getElementById(focusId); if (el) { el.focus(); try { if (selStart != null) el.setSelectionRange(selStart, selStart); } catch (e) {} } }
   }
 
