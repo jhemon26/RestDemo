@@ -9,9 +9,9 @@
 <link rel="icon" id="fav" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Montserrat:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=Sorts+Mill+Goudy:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sorts+Mill+Goudy&display=swap">
 <style id="css-base">
-:root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+:root { color-scheme: dark; background: #004a49; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
 body { margin: 0; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
@@ -396,7 +396,7 @@ button.row:hover .n { color: var(--gilt); }
 .summary .btn { width: 100%; }
 </style>
 <style id="css-app" media="not all">
-:root { --surface:#fbf6ea; --surface-raised:#ffffff; --surface-sunken:#f3ecd9; --line:#e4dac0; --ink:#17292b; --ink-muted:#56676a; --brand:#004a49; --on-brand:#fbf6ea; --brand-text:#1f5560; --brand-tint:#dcebea; --brand-deep:#004a49; --gold:#f0bc4f; --gold-text:#8a6410; --chili:#b4361b; --leaf:#2a6e44; --shadow-card:0 1px 2px rgba(23,41,43,0.06), 0 6px 20px rgba(23,41,43,0.07); --shadow-sheet:0 -8px 40px rgba(23,41,43,0.18); --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px; --radius-sm:6px; --radius-md:12px; --radius-lg:20px; --radius-pill:999px; --font-script:"Archivo", "Arial Narrow", Arial, sans-serif; --font-serif:"Archivo", "Arial Narrow", Arial, sans-serif; --font-menu:"Sorts Mill Goudy", "Goudy Old Style", Garamond, Georgia, serif; --font-sans:"Montserrat", "Segoe UI", system-ui, sans-serif; --font-bangla:"Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif; }
+:root { --surface:#004a49; --surface-raised:#0a5250; --surface-sunken:#003d3c; --line:rgba(251,248,242,.17); --ink:#fbf8f2; --ink-muted:rgba(251,248,242,.72); --brand:#e9c46a; --on-brand:#004a49; --brand-text:#e9c46a; --brand-tint:rgba(233,196,106,.14); --brand-deep:#003a39; --gold:#e9c46a; --gold-text:#e9c46a; --gold-rule:rgba(233,196,106,.5); --field-line:rgba(251,248,242,.3); --chili:#ffb49e; --leaf:#a6dcb6; --shadow-card:none; --shadow-sheet:0 -12px 40px rgba(0,0,0,.35); --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px; --radius-sm:0; --radius-md:0; --radius-lg:0; --radius-pill:999px; --font-script:"Fraunces", Georgia, "Times New Roman", serif; --font-serif:"Fraunces", Georgia, "Times New Roman", serif; --font-menu:"Sorts Mill Goudy", "Goudy Old Style", Garamond, Georgia, serif; --font-sans:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif; --font-bangla:"Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif; color-scheme: dark; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--surface-raised); }
 
 
@@ -668,6 +668,69 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
   .hr { height: 1px; background: var(--line); margin: var(--space-2) 0; }
 
 
+
+  /* Cravings house style, matching the website: poster teal ground, gold accents, thin rules, square corners.
+     Fraunces for headings, Sorts Mill Goudy for dish names and prices, Plus Jakarta Sans for everything else. */
+  body::before { background: var(--surface); }
+  .hdr { background: var(--surface); }
+  .brand .wm { font: 600 24px/1 var(--font-serif); color: var(--ink); }
+  .brand .sub { margin-top: 5px; font: 600 9px/1 var(--font-sans); letter-spacing: .24em; color: var(--gold); }
+  .nav button, .nav .nav-link { font: 600 12px/16px var(--font-sans); letter-spacing: .14em; text-transform: uppercase; padding: 10px 12px; }
+  .nav button:hover, .nav .nav-link:hover, .nav button[aria-current="page"] { background: none; color: var(--gold); }
+  .back-btn:hover { background: none; color: var(--gold); }
+  .t-title { font: 600 36px/1.08 var(--font-serif); font-stretch: normal; text-transform: none; letter-spacing: -.01em; color: var(--ink); }
+  .t-section { font: 600 22px/1.2 var(--font-serif); font-stretch: normal; color: var(--ink); }
+  .t-label { font: 600 11px/16px var(--font-sans); letter-spacing: .24em; color: var(--gold); }
+  .cv-price { color: var(--gold); }
+  /* Buttons: square, small capitals, gold or outlined, like the website */
+  .cv-btn { border-radius: 0; font: 600 12px/18px var(--font-sans); letter-spacing: .14em; text-transform: uppercase; padding: 13px 20px; }
+  .cv-btn-sm { font-size: 11px; line-height: 16px; letter-spacing: .12em; padding: 8px 14px; }
+  .cv-btn-primary { border-color: var(--brand); }
+  .cv-btn-primary:hover { background: #f1d48c; border-color: #f1d48c; }
+  .cv-btn-secondary { background: transparent; color: var(--ink); border-color: rgba(251,248,242,.55); }
+  .cv-btn-secondary:hover { background: transparent; border-color: var(--gold); color: var(--gold); }
+  .cv-btn-ghost:hover { background: none; text-decoration: underline; text-underline-offset: 4px; }
+  .cart-pill .count { background: var(--surface); color: var(--gold); }
+  .float-cart { box-shadow: 0 12px 30px rgba(0,0,0,.35); }
+  /* Chips and tags */
+  .cv-chip { background: transparent; border-color: var(--field-line); border-radius: 0; color: var(--ink-muted); font: 600 11px/16px var(--font-sans); letter-spacing: .14em; text-transform: uppercase; padding: 10px 14px; }
+  .cv-chip:hover { border-color: var(--gold); color: var(--gold); }
+  .cv-chip[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--on-brand); }
+  .cv-badge, .cv-badge-gold, .cv-badge-chili, .cv-badge-leaf, .cv-badge-brand { background: transparent; border: 1px solid var(--line); border-radius: 0; font: 600 9px/12px var(--font-sans); letter-spacing: .16em; padding: 3px 6px 2px; }
+  .cv-badge-gold, .cv-badge-brand { color: var(--gold); border-color: var(--gold-rule); }
+  .cv-badge-chili { color: var(--chili); border-color: rgba(255,180,158,.5); }
+  .cv-badge-leaf { color: var(--leaf); border-color: rgba(166,220,182,.5); }
+  /* Dishes sit straight on the teal, like the plates on the website */
+  .cv-art.photo { background: transparent; }
+  .cv-art.photo img { filter: drop-shadow(0 10px 14px rgba(0,0,0,.35)); }
+  .dish-click:hover { border-color: var(--gold-rule); }
+  /* Fields */
+  .search { background: var(--surface-sunken); border-color: var(--field-line); border-radius: 0; }
+  .search:focus-within { outline: 1.5px solid var(--gold); }
+  .cv-field input, .cv-field textarea, .cv-field select, .promo input { border-color: var(--field-line); border-radius: 0; }
+  .cv-field input:focus, .cv-field textarea:focus, .cv-field select:focus, .promo input:focus { outline: 1.5px solid var(--gold); outline-offset: 0; }
+  .search input::placeholder, .cv-field input::placeholder, .cv-field textarea::placeholder, .promo input::placeholder { color: rgba(251,248,242,.45); }
+  .cv-qty { background: transparent; border-color: var(--field-line); }
+  .seg, .seg button { border-radius: 0; }
+  .seg button[aria-pressed="true"] { background: var(--gold); color: var(--on-brand); box-shadow: none; }
+  .opt:has(input:checked), .pay-opt:has(input:checked) { border-color: var(--gold); }
+  .notice { border: 1px solid var(--gold-rule); }
+  /* Sheets */
+  .scrim { background: rgba(0,22,22,.72); }
+  .sheet { background: var(--surface); border: 1px solid var(--gold-rule); border-bottom: 0; }
+  @media (min-width: 721px) { .sheet { border-bottom: 1px solid var(--gold-rule); } }
+  .sheet .cv-art { height: 260px; }
+  .sheet .cv-art.photo img { width: 100%; height: 260px; object-fit: contain; padding: 20px 0 4px; }
+  .sheet-foot { background: var(--surface); }
+  .x { background: var(--surface); border: 1px solid var(--gold); color: var(--ink); }
+  .x:hover { color: var(--gold); }
+  /* Order tracking */
+  .track-hero { background: var(--surface-raised); color: var(--ink); border: 1px solid var(--gold-rule); }
+  .track-hero .eta { font: 600 40px/1.1 var(--font-serif); color: var(--gold); }
+  .track-hero .t-small { color: var(--ink-muted); }
+  .progress { background: rgba(251,248,242,.14); }
+  .toast { border-radius: 0; font: 600 13px/20px var(--font-sans); }
+  @media (max-width: 720px) { .bottom-nav { background: var(--surface); } }
 </style>
 </head>
 <body>
@@ -690,7 +753,7 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
       cssSite.media = a ? "not all" : "all"; cssApp.media = a ? "all" : "not all";
       site.hidden = a; appv.hidden = !a; document.body.classList.remove("locked");
       document.title = a ? "Order online · Cravings Café & Bistro" : "Cravings Café & Bistro";
-      theme.setAttribute("content", a ? "#ffffff" : "#004a49");
+      
       inApp = a;
       if (a) window.scrollTo(0, 0);
       else if (back && location.hash === siteHash) window.scrollTo(0, siteY);
@@ -1297,7 +1360,7 @@ body { margin: 0; background: var(--surface); color: var(--ink); font-family: va
       (o.status < 4 && o.status !== 5 ? '<span class="t-small">Updates as the restaurant moves your order</span>' : "") + "</div>" +
       '<div class="two-col"><div class="cv-stack" style="padding:0;gap:var(--space-4)">' +
       '<div class="track-hero"><div style="flex:1;min-width:200px"><div class="t-label">' + (cancelled ? "Cancelled" : o.status === 4 ? "Completed" : "Arriving in") + '</div><div class="eta">' + (cancelled ? "—" : o.status === 4 ? fmtTime(o.times[4]).split(",")[0] : "~" + left + " min") + '</div><div class="progress"><span style="width:' + (cancelled ? 0 : (o.status / 4) * 100) + '%"></span></div></div>' +
-      (o.mode === "delivery" && o.status >= 3 && !cancelled ? '<div class="rider"><div class="avatar" style="background:var(--gold);color:var(--brand-deep)">' + I.bike.replace("<svg", '<svg width="22" height="22"') + '</div><div><b>Your rider is on the way</b><div class="t-small" style="color:var(--on-brand)">Questions? Call +880 1937-117782</div></div></div>' : "") + "</div>" +
+      (o.mode === "delivery" && o.status >= 3 && !cancelled ? '<div class="rider"><div class="avatar" style="background:var(--gold);color:var(--brand-deep)">' + I.bike.replace("<svg", '<svg width="22" height="22"') + '</div><div><b>Your rider is on the way</b><div class="t-small">Questions? Call +880 1937-117782</div></div></div>' : "") + "</div>" +
       '<div class="card">' + trackList + "</div>" + review +
       (o.status === 0 ? '<button class="cv-btn cv-btn-danger" style="justify-self:start" data-cancel="' + o.id + '">Cancel order</button>' : "") + "</div>" +
       '<aside class="card sum"><h2 class="t-section" style="margin-bottom:var(--space-2)">Receipt</h2>' +
